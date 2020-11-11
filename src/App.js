@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const PLAYERX = "Player 1 - Xs";
+const PLAYER0 = "Player 2 - 0s";
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        turn: PLAYERX,
+        values: [
+        ['-', '-', '-'],
+        ['-', 'X', '-'],
+        ['-', '-', '-'],
+        ],
+    };
+  }
+
+  render() {
+      let text = "Turn of " + this.state.turn;
+      let board = this.state.values.map((rowValues, rowIndex) => {
+        let row = rowValues.map((value, columnIndex) => {
+            let mykey = "" + rowIndex + columnIndex;
+            return (
+              <span key={mykey}>{value}</span>
+            );
+        });
+        return (
+           <div key={"fila" + rowIndex}>
+             {row}
+           </div>
+        );
+      });
+
+      return (
+        <div>
+          <header className="header">
+            {text}
+          </header>
+          {board}
+        </div>
+      );
+  }
+
 }
-
-export default App;
