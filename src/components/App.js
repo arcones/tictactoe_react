@@ -14,7 +14,7 @@ class App extends React.Component {
     }
 
     appClick(rowNumber, columnNumber) {
-       this.props.dispatch(playPosition(rowNumber,columnNumber,this.props.turn, this.props.values))
+       this.props.dispatch(playPosition(rowNumber,columnNumber,this.props.turn, this.props.values));
     }
 
     resetClick(){
@@ -26,10 +26,7 @@ class App extends React.Component {
 
     return (
       <div>
-      
-        <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-          <Header text={text}/>
-        </div>
+        <Header text={text}/>
         <Board values={this.props.values}  appClick={this.appClick}/>
         <h3>Number of moves: {this.props.moves}</h3>
         <Reset resetClick={this.resetClick}/>
