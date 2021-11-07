@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header.jsx';
 import Board from './Board.jsx';
 import Reset from './Reset.jsx';
@@ -6,57 +6,47 @@ import Reset from './Reset.jsx';
 const PLAYERX = "Player 1 - Xs";
 const PLAYER0 = "Player 2 - 0s";
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        turn: PLAYERX,
-        moves: 0,
-        values: [
-        ['-', '-', '-'],
-        ['-', '-', '-'],
-        ['-', '-', '-'],
-        ],
-    };
-    this.appClick = this.appClick.bind(this);
-    this.resetClick = this.resetClick.bind(this);
-  }
+export default function App(props) {
+  const [turn, setTurn] = useState(PLAYERX);
+  const [moves, setMoves] = useState(0);
+  const [values, setValues] = useState([
+    ['-', '-', '-'],
+    ['-', '-', '-'],
+    ['-', '-', '-'],
+    ]);
 
-  appClick(rowNumber, columnNumber) {
-      let valuesCopy = JSON.parse(JSON.stringify(this.state.values));
-      let newMovement = this.state.turn === PLAYERX ? 'X' : '0';
+
+
+  function appClick(rowNumber, columnNumber) {
+      let valuesCopy = JSON.parse(JSON.stringify(values));
+      let newMovement = turn === PLAYERX ? 'X' : '0';
       valuesCopy[rowNumber][columnNumber] = newMovement;
-      this.setState({
-          turn: this.state.turn === PLAYERX ? PLAYER0 : PLAYERX,
-          values: valuesCopy,
-          moves: this.state.moves + 1
-      });
+      setTurn(turn === PLAYERX ? PLAYER0 : PLAYERX);
+      setValues(valuesCopy);
+      setMoves(moves + 1); 
   }
 
-  resetClick(){
-    this.setState({
-      turn: PLAYERX,
-      values: [
-        ['-', '-', '-'],
-        ['-', '-', '-'],
-        ['-', '-', '-'],
-      ],
-      winner: undefined,
-      moves: 0
-    });
+  function resetClick(){
+    setTurn(PLAYERX);
+    setMoves(0);
+    setValues([
+      ['-', '-', '-'],
+      ['-', '-', '-'],
+      ['-', '-', '-'],
+    ]);
   }
 
-  render() {
-    let text = "Turn of " + this.state.turn;
+  
+  let text = "Turn of " + turn;
 
-    return (
-      <div>
-        <Header text={text}/>
-        <Board values={this.state.values}  appClick={this.appClick}/>
-        <h3>Number of moves: {this.state.moves}</h3>
-        <Reset resetClick={this.resetClick}></Reset>
-      </div>
-    );
-}
+  return (
+    <div>
+      <Header text={text}/>
+      <Board values={values}  appClick={appClick}/>
+      <h3>Number of moves: {moves}</h3>
+      <Reset resetClick={resetClick}></Reset>
+    </div>
+  );
+
 
 }
