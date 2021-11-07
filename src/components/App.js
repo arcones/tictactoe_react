@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header.jsx';
 import Board from './Board.jsx';
 import Reset from './Reset.jsx';
@@ -12,10 +12,26 @@ export default function App(props) {
   const [values, setValues] = useState([
     ['-', '-', '-'],
     ['-', '-', '-'],
-    ['-', '-', '-'],
+    ['-', '-', '-']
     ]);
 
+  useEffect(() => {
+    // Update the document title using the browser API
+    document.title = `Turn of ${turn}`;
+  });
 
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch("http://myjson.dit.upm.es/api/bins/ccr5");
+      const myjson = await res.json();
+      console.log(myjson);
+      setTurn(myjson.turn);
+      setMoves(myjson.moves);
+      setValues(myjson.values);
+    }
+
+    fetchData();
+  }, []);
 
   function appClick(rowNumber, columnNumber) {
       let valuesCopy = JSON.parse(JSON.stringify(values));
@@ -32,7 +48,7 @@ export default function App(props) {
     setValues([
       ['-', '-', '-'],
       ['-', '-', '-'],
-      ['-', '-', '-'],
+      ['-', '-', '-']
     ]);
   }
 
